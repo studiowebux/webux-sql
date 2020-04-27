@@ -36,7 +36,7 @@ class sql {
    * @return {Promise}
    */
   Migration(action = "latest", name = "") {
-    if (action != "make") {
+    if (action != "make") { 
       this.log.debug(`webux-sql - Run Migration with this '${action}'`);
       return this.sql.migrate[action](this.config);
     } else {

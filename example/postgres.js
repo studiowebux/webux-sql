@@ -1,5 +1,5 @@
 /**
- * Please Install the postgres dependencies before, 
+ * Please Install the postgres dependencies before,
  * (please read the KnexJS documentation to add another Database, https://knexjs.org/)
  * npm install pg --save
  *
@@ -23,16 +23,18 @@ const opts = {
       host: "127.0.0.1",
       user: "webux",
       password: "webux_password",
-      database: "webux_sql"
+      database: "webux_sql",
     },
     migrations: {
-      directory: "./migrations"
+      directory: "./migrations",
     },
     seeds: {
-      directory: "./seeds"
-    }
-  }
-  // ...
+      directory: "./seeds",
+    },
+  },
+  // production: {},
+  // staging: {},
+  // test: {}
 };
 
 const webuxSQL = new WebuxSQL(opts);
@@ -40,7 +42,7 @@ const webuxSQL = new WebuxSQL(opts);
 async function database() {
   try {
     // Try to run the migration if there is any
-    await webuxSQL.Migration().catch(e => {
+    await webuxSQL.Migration().catch((e) => {
       console.log("We can safely ignore this error for this test");
     });
 
@@ -49,7 +51,7 @@ async function database() {
     if (!exist) {
       await webuxSQL.Migration("make", "Users");
       await webuxSQL.Migration("make", "Empty");
-      console.log("*** You should put some stuffs within the migration file");
+      console.log("*** You should put some stuffs within the migration files");
       await webuxSQL.Seed("make", "Users");
       console.log("*** You should put some stuffs within the seed file");
       console.log("After configuring the files, you can relaunch the script.");

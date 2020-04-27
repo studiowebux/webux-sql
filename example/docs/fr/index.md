@@ -1,20 +1,10 @@
-## Introduction
-
-This module uses KnexJS.
-
-## Installation
-
-```bash
-npm install --save @studiowebux/sql
-```
-
 ## Usage
 
 ### Configurations
 
 #### Options
 
-The available options are split by environment (development, staging, production and others).
+Les options disponibles sont séparées par environement (development, staging, production et autres)
 
 ```javascript
 const opts = {
@@ -39,22 +29,22 @@ const opts = {
 };
 ```
 
-The options structure is the same as KnexJS, for more details, you can read the official documentation : <a href="https://knexjs.org/#Installation-client" target="_blank">KnexJS</a>
+La structure des options est la même que pour knexJS. Pour plus de détails, vous pouvez lire la documentation officielle : <a href="https://knexjs.org/#Installation-client" target="_blank">KnexJS</a>
 
-| Option     | Description                                            |
-| ---------- | ------------------------------------------------------ |
-| client     | The client type, only `postgresql` has been tested yet |
-| connection | database and connection information                    |
-| migrations | The directory that contains all migrations             |
-| seeds      | The directory that contains all seeds                  |
+| Option     | Description                                                                  |
+| ---------- | ---------------------------------------------------------------------------- |
+| client     | Le type de client utilisé, seulement `postgresql` a été testé pour le moment |
+| connection | Les information de connexion et de la base de données                        |
+| migrations | le répertoire qui contient toutes les migrations                             |
+| seeds      | Le répertoire qui contient toutes les valeurs par défaut                     |
 
-> To use this module, you must install the library required by the chosen solution, read the official documentation to get the complete list : <a href="https://knexjs.org" target="_blank">KnexJS</a>
+> Pour utiliser ce module, vous devez installer la librairie requise pour votre connexion par rapport à la solution que vous souhaitez utiliser, voir la documentation officielle pour la liste de toutes les librairies : <a href="https://knexjs.org" target="_blank">KnexJS</a>
 
-### Functions
+### Fonctions
 
 #### constructor(opts, log = console)
 
-It initializes the connection according to the environment and the client configuration.
+Le constructeur pour initialiser la connexion selon l'environnement et les informations données.
 
 ```javascript
 const WebuxSQL = require("@studiowebux/sql");
@@ -62,18 +52,18 @@ const WebuxSQL = require("@studiowebux/sql");
 const webuxSQL = new WebuxSQL(opts, console);
 ```
 
-> If the environment variable `NODE_ENV` is not define, this module will automatically use the configuration under the `development` key.
+> Si la variable d'environnement `NODE_ENV` n'est pas définie, ce module va automatiquement utiliser les options défini sous `development`.
 
-> The `log` parameter allows to use a custom logger function.
+> Le paramètre `log` permet d'utiliser un logger personnalisé.
 
 #### Migration(action = "latest", name = ""): Promise \<Object\>
 
-This function allows to launch the migration with a specific action.  
-The parameter `name` is only required with this action : `make`.
+Cette fonction permet de lancer les migrations selon l'action demandée.  
+le paramètre `name` est seulement requis pour l'action `make`.
 
-> By default, the action `latest` is used.
+> Par défaut, l'action `latest` est utilisée.
 
-Possible actions (<a href="https://knexjs.org/#Migrations-API" target="_blank">KnexJS API</a>) :
+Les actions possibles (<a href="https://knexjs.org/#Migrations-API" target="_blank">KnexJS API</a>) :
 
 - up
 - down
@@ -91,12 +81,12 @@ await webuxSQL.Migration("make", "user");
 
 #### Seed(action = "run", name = ""): Promise \<Object\>
 
-This function allows to launch the seeds with a specific action.  
-The parameter `name` is only required with this action : `make`.
+Cette fonction permet de lancer les seeds selon l'action demandée.  
+le paramètre `name` est seulement requis pour l'action `make`.
 
-> By default, the action `run` is used.
+> Par défaut, l'action `run` est utilisée.
 
-Possible actions (<a href="https://knexjs.org/#Seeds-API" target="_blank">KnexJS API</a>) :
+Les actions possibles (<a href="https://knexjs.org/#Seeds-API" target="_blank">KnexJS API</a>) :
 
 - run
 - make
@@ -107,13 +97,13 @@ await webuxSQL.Seed();
 await webuxSQL.Seed("make", "user");
 ```
 
-#### Other methods / KnexJS Functions
+#### Les autres méthodes
 
-This module allows to use knexJS, this means that all native functions are available by default. This is recommended to read the official documentation to know more about this powerful library,
+Ce module permet d'utiliser knexJS, toutes les fonctions natives sont disponibles par défaut, il est recommandé de lire la documentation officielle pour en apprendre d'avantage,
 
 <a href="https://knexjs.org/" target="_blank">KnexJS Documentation</a>
 
-Example with a select:
+Exemple avec un select:
 
 ```javascript
 const users = await webuxSQL.sql.select("*").from("Users");
@@ -123,24 +113,24 @@ if (!users || users.length === 0) {
 console.log(users);
 ```
 
-## Quick Start
+## Démarrage rapide
 
-This example used the `postgresql` database.  
-It is required to install the postgres library using this command: `npm install pg`
+Dans l'exemple ci-dessous, la base de données utilisée est `postgresql`.  
+Il est requis d'installer la librairie de postgres dans le projet avec la commande suivante : `npm install pg`
 
-#### Step 1 - Install pg
+#### Étape 1 - Installer pg
 
 ```bash
 npm install --save pg
 ```
 
-#### Step 2 - Start a postgres server with Docker
+#### Étape 2 - Démarrer un serveur postgres avec Docker
 
 ```bash
 docker run -d --name webux_db -e POSTGRES_PASSWORD=webux_password -e POSTGRES_USER=webux -e POSTGRES_DB=webux_sql -p 5432:5432 postgres:latest
 ```
 
-#### Step 3 - Create the postgres.js file
+#### Étape 3 - Créer le fichier postgres.js
 
 ```javascript
 const WebuxSQL = require("@studiowebux/sql");
@@ -180,7 +170,7 @@ async function database() {
     if (!exist) {
       await webuxSQL.Migration("make", "Users");
       await webuxSQL.Migration("make", "Empty");
-      console.log("*** You should put some stuffs within the migration files");
+      console.log("*** You should put some stuffs within the migration file");
       await webuxSQL.Seed("make", "Users");
       console.log("*** You should put some stuffs within the seed file");
       console.log("After configuring the files, you can relaunch the script.");
@@ -213,15 +203,17 @@ async function database() {
 database();
 ```
 
-Launch the script at least one time, it will create the empty migration files,
+Lancer le script au moins une fois, celui-ci va créer les migrations,
 
 ```bash
 node postgres.js
 ```
 
-After launching the script, you should have 2 new directories, `./migrations` and `./seeds`
+Après avoir lancé la commande, 2 répertoires devraient avoir été créé, `./migrations` et `./seeds`
 
-#### Step 4 - Add content in the migrations and seeds files
+> Dans un context de production, vous pouvez créer un script dans un 'sidecar' qui sera lancé avant le déploiement pour initialiser et créer les données par défaut, lors du lancement officiel de votre application ou pour faire les tests et l'environnement de staging.
+
+#### Étape 4 - Ajouter le contenu dans les migrations et seeds
 
 migrations/Empty.js
 
@@ -272,15 +264,15 @@ exports.seed = function (knex) {
 };
 ```
 
-#### Step 5 - Launch the script with the real configuration
+#### Étape 5 - Lancer le script une seconde fois
 
-Launch this command :
+Après avoir défini la structure de la base de données et créer le contenu par défaut, lancez cette commande :
 
 ```bash
 node postgres.js
 ```
 
-Using the content above (Step 4), you should get this :
+Avec les fichiers de migrations et les seeds vous devriez obtenir ceci:
 
 ```bash
 webux-sql - Run Migration with this 'latest'
@@ -301,18 +293,4 @@ The empty table is empty, good news !
 []
 ```
 
-## Feature Request
-
-## Last Version
-
-- 2020-04-26 : v1.0.0 - [Github](https://github.com/studiowebux/webux-sql)
-
-## Videos and other resources
-
-## Contribution
-
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-## license
-
-SEE LICENSE IN license.txt
+## Vidéos et autres ressources

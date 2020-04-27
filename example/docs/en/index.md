@@ -1,13 +1,3 @@
-## Introduction
-
-This module uses KnexJS.
-
-## Installation
-
-```bash
-npm install --save @studiowebux/sql
-```
-
 ## Usage
 
 ### Configurations
@@ -24,15 +14,15 @@ const opts = {
       host: "127.0.0.1",
       user: "webux",
       password: "webux_password",
-      database: "webux_sql",
+      database: "webux_sql"
     },
     migrations: {
-      directory: "./migrations",
+      directory: "./migrations"
     },
     seeds: {
-      directory: "./seeds",
-    },
-  },
+      directory: "./seeds"
+    }
+  }
   // production: {},
   // staging: {},
   // test: {}
@@ -41,12 +31,12 @@ const opts = {
 
 The options structure is the same as KnexJS, for more details, you can read the official documentation : <a href="https://knexjs.org/#Installation-client" target="_blank">KnexJS</a>
 
-| Option     | Description                                            |
-| ---------- | ------------------------------------------------------ |
-| client     | The client type, only `postgresql` has been tested yet |
-| connection | database and connection information                    |
-| migrations | The directory that contains all migrations             |
-| seeds      | The directory that contains all seeds                  |
+| Option | Description |
+|--------|-------------|
+| client | The client type, only `postgresql` has been tested yet |
+| connection | database and connection information |
+| migrations | The directory that contains all migrations |
+| seeds | The directory that contains all seeds |
 
 > To use this module, you must install the library required by the chosen solution, read the official documentation to get the complete list : <a href="https://knexjs.org" target="_blank">KnexJS</a>
 
@@ -62,7 +52,7 @@ const WebuxSQL = require("@studiowebux/sql");
 const webuxSQL = new WebuxSQL(opts, console);
 ```
 
-> If the environment variable `NODE_ENV` is not define, this module will automatically use the configuration under the `development` key.
+>If the environment variable `NODE_ENV` is not define, this module will automatically use the configuration under the `development` key.  
 
 > The `log` parameter allows to use a custom logger function.
 
@@ -74,7 +64,6 @@ The parameter `name` is only required with this action : `make`.
 > By default, the action `latest` is used.
 
 Possible actions (<a href="https://knexjs.org/#Migrations-API" target="_blank">KnexJS API</a>) :
-
 - up
 - down
 - latest (<a href="https://knexjs.org/#Migrations-latest" target="_blank">KnexJS Latest</a>)
@@ -91,13 +80,12 @@ await webuxSQL.Migration("make", "user");
 
 #### Seed(action = "run", name = ""): Promise \<Object\>
 
-This function allows to launch the seeds with a specific action.  
+This function allows to launch the seeds with a specific action.   
 The parameter `name` is only required with this action : `make`.
 
 > By default, the action `run` is used.
 
 Possible actions (<a href="https://knexjs.org/#Seeds-API" target="_blank">KnexJS API</a>) :
-
 - run
 - make
 
@@ -109,16 +97,15 @@ await webuxSQL.Seed("make", "user");
 
 #### Other methods / KnexJS Functions
 
-This module allows to use knexJS, this means that all native functions are available by default. This is recommended to read the official documentation to know more about this powerful library,
+This module allows to use knexJS, this means that all native functions are available by default. This is recommended to read the official documentation to know more about this powerful library,  
 
 <a href="https://knexjs.org/" target="_blank">KnexJS Documentation</a>
 
 Example with a select:
-
 ```javascript
 const users = await webuxSQL.sql.select("*").from("Users");
 if (!users || users.length === 0) {
-  console.error("No users found");
+	console.error("No users found");
 }
 console.log(users);
 ```
@@ -219,59 +206,55 @@ Launch the script at least one time, it will create the empty migration files,
 node postgres.js
 ```
 
-After launching the script, you should have 2 new directories, `./migrations` and `./seeds`
+After launching the script, you should have 2  new directories, `./migrations` and `./seeds`
 
 #### Step 4 - Add content in the migrations and seeds files
 
 migrations/Empty.js
-
 ```javascript
-exports.up = function (knex) {
-  return knex.schema.createTable("Empty", function (table) {
+exports.up = function(knex) {
+  return knex.schema.createTable("Empty", function(table) {
     table.increments(); // id (PK)
     table.timestamps(); // created_at & updated_at
   });
 };
 
-exports.down = function (knex) {
+exports.down = function(knex) {
   return knex.schema.dropTable("Empty");
 };
 ```
 
 migrations/Users.js
-
 ```javascript
-exports.up = function (knex) {
-  return knex.schema.createTable("Users", function (table) {
+exports.up = function(knex) {
+  return knex.schema.createTable("Users", function(table) {
     table.increments(); // id (PK)
     table.string("fullname"); // fullname (varchar(255))
     table.timestamps(); // created_at & updated_at
   });
 };
 
-exports.down = function (knex) {
+exports.down = function(knex) {
   return knex.schema.dropTable("Users");
 };
 ```
 
 seeds/Users.js
-
 ```javascript
-exports.seed = function (knex) {
+exports.seed = function(knex) {
   // Deletes ALL existing entries
   return knex("Users")
     .del()
-    .then(function () {
+    .then(function() {
       // Inserts seed entries
       return knex("Users").insert([
         { id: 1, fullname: "John Doe" },
         { id: 2, fullname: "Jane Doe" },
-        { id: 3, fullname: "Junior Doe" },
+        { id: 3, fullname: "Junior Doe" }
       ]);
     });
 };
 ```
-
 #### Step 5 - Launch the script with the real configuration
 
 Launch this command :
@@ -280,7 +263,7 @@ Launch this command :
 node postgres.js
 ```
 
-Using the content above (Step 4), you should get this :
+Using the content above (Step 4), you should get this : 
 
 ```bash
 webux-sql - Run Migration with this 'latest'
@@ -301,18 +284,4 @@ The empty table is empty, good news !
 []
 ```
 
-## Feature Request
-
-## Last Version
-
-- 2020-04-26 : v1.0.0 - [Github](https://github.com/studiowebux/webux-sql)
-
 ## Videos and other resources
-
-## Contribution
-
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-## license
-
-SEE LICENSE IN license.txt
