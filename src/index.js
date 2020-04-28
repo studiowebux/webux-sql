@@ -9,11 +9,8 @@
 
 const knex = require("knex");
 
-// TODO: The user will have to install the desired client, the only test performed for now is with PG (postgres)
-// https://knexjs.org
-
 /**
- * SQL Wrapper
+ * KnexJS Wrapper
  * @class sql
  */
 class sql {
@@ -36,7 +33,7 @@ class sql {
    * @return {Promise}
    */
   Migration(action = "latest", name = "") {
-    if (action != "make") { 
+    if (action != "make") {
       this.log.debug(`webux-sql - Run Migration with this '${action}'`);
       return this.sql.migrate[action](this.config);
     } else {
