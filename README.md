@@ -2,6 +2,8 @@
 
 This module uses KnexJS.
 
+For more details (EN/FR) : <a href="https://github.com/studiowebux/webux-sql/wiki" target="_blank">Wiki</a>
+
 ## Installation
 
 ```bash
@@ -305,7 +307,7 @@ The empty table is empty, good news !
 
 ## Last Version
 
-- 2020-04-26 : v1.0.0 - [Github](https://github.com/studiowebux/webux-sql)
+- 2020-04-26 : v1.0.0 - [Github](https://github.com/studiowebux/webux-sql) / [NPM](https://www.npmjs.com/package/@studiowebux/sql)
 
 ## Videos and other resources
 
