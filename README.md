@@ -10,6 +10,8 @@ For more details (EN/FR) : <a href="https://github.com/studiowebux/webux-sql/wik
 npm install --save @studiowebux/sql
 ```
 
+[NPM](https://www.npmjs.com/package/@studiowebux/sql)
+
 ## Usage
 
 ### Configurations
