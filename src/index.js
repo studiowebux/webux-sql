@@ -21,7 +21,7 @@ class sql {
    */
   constructor(opts, log = console) {
     // the opts structure should be defined per the documentation : https://knexjs.org
-    this.config = opts[process.NODE_ENV || "development"];
+    this.config = opts[process.env.NODE_ENV || "development"];
     this.sql = knex(this.config);
     this.log = log;
   }
