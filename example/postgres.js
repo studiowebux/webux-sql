@@ -25,24 +25,22 @@
  * License: All rights reserved Studio Webux S.E.N.C 2015-Present
  */
 
-"use strict";
-
-const WebuxSQL = require("../src/index");
+const WebuxSQL = require('../src/index');
 
 const opts = {
   development: {
-    client: "postgresql",
+    client: 'postgresql',
     connection: {
-      host: "127.0.0.1",
-      user: "webux",
-      password: "webux_password",
-      database: "webux_sql",
+      host: '127.0.0.1',
+      user: 'webux',
+      password: 'webux_password',
+      database: 'webux_sql',
     },
     migrations: {
-      directory: "./migrations",
+      directory: './migrations',
     },
     seeds: {
-      directory: "./seeds",
+      directory: './seeds',
     },
   },
   // production: {},
@@ -59,33 +57,33 @@ async function database() {
   try {
     // Try to run the migration if there is any
     await webuxSQL.Migration().catch((e) => {
-      console.log("We can safely ignore this error for this test");
+      console.log('We can safely ignore this error for this test');
     });
 
-    const exist = await webuxSQL.sql.schema.hasTable("Users");
+    const exist = await webuxSQL.sql.schema.hasTable('Users');
 
     if (!exist) {
-      await webuxSQL.Migration("make", "Users");
-      await webuxSQL.Migration("make", "Empty");
-      console.log("*** You should put some stuffs within the migration files");
-      await webuxSQL.Seed("make", "Users");
-      console.log("*** You should put some stuffs within the seed file");
-      console.log("After configuring the files, you can relaunch the script.");
+      await webuxSQL.Migration('make', 'Users');
+      await webuxSQL.Migration('make', 'Empty');
+      console.log('*** You should put some stuffs within the migration files');
+      await webuxSQL.Seed('make', 'Users');
+      console.log('*** You should put some stuffs within the seed file');
+      console.log('After configuring the files, you can relaunch the script.');
       process.exit(0);
     }
 
     // Try to run the seed if there is any
     await webuxSQL.Seed();
 
-    const users = await webuxSQL.sql.select("*").from("Users");
+    const users = await webuxSQL.sql.select('*').from('Users');
     if (!users || users.length === 0) {
-      console.error("No users found");
+      console.error('No users found');
     }
     console.log(users);
 
-    const empty = await webuxSQL.sql.select("*").from("Empty");
+    const empty = await webuxSQL.sql.select('*').from('Empty');
     if (!empty || empty.length === 0) {
-      console.error("The empty table is empty, good news !");
+      console.error('The empty table is empty, good news !');
     }
     console.log(empty);
 
