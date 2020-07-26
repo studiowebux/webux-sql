@@ -2,8 +2,8 @@ const WebuxSQL = require('../src');
 
 test('Create new WebuxSQL instance without options', () => {
   function check() {
-    const socket = new WebuxSQL();
-    return socket;
+    const sql = new WebuxSQL();
+    return sql;
   }
   expect(check).toThrowError('No options has been provided');
 });
@@ -27,7 +27,7 @@ test('Create new WebuxSQL instance with options', () => {
     },
   };
 
-  const socket = new WebuxSQL(opts);
+  const sql = new WebuxSQL(opts);
 
-  expect(socket).toBeInstanceOf(Object);
+  expect(sql).toBeInstanceOf(Object);
 });
