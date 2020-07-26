@@ -12,7 +12,7 @@
     "url": "https://github.com/studiowebux/webux-sql.git"
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest --runInBand",
     "lint": "eslint src/**",
     "doc": "jsdoc src -d jsdoc/ "
   },

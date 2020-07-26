@@ -4,7 +4,12 @@
  * npm install pg --save
  *
  * Please launch this docker to have the actual DB
- * docker run -d --name webux_db -e POSTGRES_PASSWORD=webux_password -e POSTGRES_USER=webux -e POSTGRES_DB=webux_sql -p 5432:5432 postgres:latest
+ * docker run -d --name webux_db \
+ * -e POSTGRES_PASSWORD=webux_password \
+ * -e POSTGRES_USER=webux \
+ * -e POSTGRES_DB=webux_sql \
+ * -p 5432:5432 \
+ * postgres:latest
  *
  * node postgres.js
  *
@@ -56,7 +61,7 @@ const webuxSQL = new WebuxSQL(opts);
 async function database() {
   try {
     // Try to run the migration if there is any
-    await webuxSQL.Migration().catch((e) => {
+    await webuxSQL.Migration().catch(() => {
       console.log('We can safely ignore this error for this test');
     });
 

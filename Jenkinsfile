@@ -7,13 +7,26 @@ pipeline {
   }
 
   stages {
+    stage('Start postgresql in docker') {
+      steps {
+        echo '*** Run postgres'
+        sh ('''
+        docker run -d --name webuxsql \
+        -e POSTGRES_PASSWORD=webux_password \
+        -e POSTGRES_USER=webux \
+        -e POSTGRES_DB=webux_sql_test \
+        -p 5432:5432 postgres:latest
+        ''')
+      }
+    }
+
     stage('Preparation') {
       steps {
         sh 'git remote add prod https://github.com/studiowebux/webux-sql.git || true'
       }
     }
 
-    stage('Dependencies') {
+    stage('Install Dependencies') {
       steps {
         sh 'npm install'
       }
@@ -46,28 +59,26 @@ pipeline {
       steps {
         script {
           env.RELEASE_SCOPE = input message: 'User input required', ok: 'Continue',
-                            parameters: [choice(name: 'RELEASE_SCOPE', choices: 'patch\nminor\nmajor', description: 'What is the release scope?')]
+                            parameters: [choice(name: 'RELEASE_SCOPE', choices: ['patch', 'minor', 'major'], description: 'What is the release scope?')]
         }
         echo "${env.RELEASE_SCOPE}"
       }
     }
 
     stage('Staging') {
-
-        
       steps {
         withCredentials([usernamePassword(credentialsId: 'git:1f00e77842774986a932a1367b515be6efb49cae2d1a134a1988a651d8ff094b', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]){ 
           sh('''
               git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
               git push origin master
-              git config --unset credential.helper
+              git config --unset credential.helper || true
           ''')
         }
         withCredentials([usernamePassword(credentialsId: 'GitHub', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]){ 
           sh('''
               git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
               git push prod master
-              git config --unset credential.helper
+              git config --unset credential.helper || true
           ''')
         }
         sh "npm version ${env.RELEASE_SCOPE}"
@@ -84,14 +95,14 @@ pipeline {
           sh('''
               git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
               git push origin master
-              git config --unset credential.helper
+              git config --unset credential.helper || true
           ''')
         }
         withCredentials([usernamePassword(credentialsId: 'GitHub', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]){ 
           sh('''
               git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
               git push prod master
-              git config --unset credential.helper
+              git config --unset credential.helper || true
           ''')
         }
         
@@ -102,13 +113,17 @@ pipeline {
 
   }
   post {
+    always {
+      sh 'docker rm -f webuxsql'
+    }
+
     failure {
         mail to: 'tommy@studiowebux.com',
         subject: "Failed Pipeline ${currentBuild.fullDisplayName}",
         body: " For details about the failure, see ${env.BUILD_URL}"
 
 
-        sh 'git config --unset credential.helper'
+        sh 'git config --unset credential.helper || true'
     }
   }
 }
