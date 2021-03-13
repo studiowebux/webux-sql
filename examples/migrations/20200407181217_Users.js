@@ -1,7 +1,7 @@
 exports.up = function (knex) {
   return knex.schema.createTable('Users', (table) => {
     table.increments(); // id (PK)
-    table.string('fullname'); // fullname (varchar(255))
+    table.string('fullname').unique(); // fullname (varchar(255))
     table.timestamps(); // created_at & updated_at
   });
 };

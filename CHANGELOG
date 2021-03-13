@@ -12,3 +12,6 @@
 - finished the test with postgresql
 - tested the behavior with Jenkins
 
+[2021-03-13]
+- Upgrade knex version to 0.95.2
+- Written tests
